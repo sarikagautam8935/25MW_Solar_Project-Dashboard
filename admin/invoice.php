@@ -126,7 +126,7 @@ include('../middleware/adminmiddleware.php');
         <div class="col-md-12">
             <div class="card second-color">
                 <div class="card-header first-color">
-                    <h4 class="custom-heading">Main Design/Drawing List - MDL</h4>
+                    <h4 class="custom-heading">Invoice</h4>
                 </div>
                 <div class="card-body third-color">
                     <div class="table-responsive">
@@ -134,30 +134,30 @@ include('../middleware/adminmiddleware.php');
                             <thead>
                                 <tr>
                                     <th class="custom-table-heading">ID</th>
-                                    <th class="custom-table-heading">Drawing No.</th>
-                                    <th class="custom-table-heading">Drawing Title</th>
-                                    <th class="custom-table-heading">Category</th>
+                                    <th class="custom-table-heading">Invoice No.</th>
+                                    <th class="custom-table-heading">Invoice Date</th>
+                                    <th class="custom-table-heading">Invoice Title</th>
                                     <th class="custom-table-heading">Status</th>
                                     <th class="custom-table-heading">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php
-                                $design = getAll("design"); // Ensure this function returns data correctly
-                                if (mysqli_num_rows($design) > 0) {
-                                    foreach ($design as $item) {
+                                $invoice = getAll("invoice"); // Ensure this function returns data correctly
+                                if (mysqli_num_rows($invoice) > 0) {
+                                    foreach ($invoice as $item) {
                                 ?>
                                         <tr>
                                             <td><?= htmlspecialchars($item['id']); ?></td>
-                                            <td><?= htmlspecialchars($item['drawing_number']); ?></td>
-                                            <td><?= htmlspecialchars($item['drawing_title']); ?></td>
-                                            <td><?= htmlspecialchars($item['category']); ?></td>
+                                            <td><?= htmlspecialchars($item['invoice_number']); ?></td>
+                                            <td><?= htmlspecialchars($item['invoice_date']); ?></td>
+                                            <td><?= htmlspecialchars($item['invoice_name']); ?></td>
                                             <td><?= htmlspecialchars($item['status']); ?></td>
                                             <td>
-                                                <a href="edit-design.php?id=<?= htmlspecialchars($item['id']); ?>" class="btn btn-sm btn-primary">Edit</a>
-                                                <form action="code.php" method="POST" style="display:inline;">
-                                                    <input type="hidden" name="design_id" value="<?= htmlspecialchars($item['id']); ?>">
-                                                    <button type="submit" class="btn btn-sm btn-danger" name="delete_drawing_btn">Delete</button>
+                                                <a href="edit_invoice.php?id=<?= htmlspecialchars($item['id']); ?>" class="btn btn-sm btn-primary">Edit</a>
+                                                <form action="code_invoice.php" method="POST" style="display:inline;">
+                                                    <input type="hidden" name="invoice_id" value="<?= htmlspecialchars($item['id']); ?>">
+                                                    <button type="submit" class="btn btn-sm btn-danger" name="delete_invoice_btn">Delete</button>
                                                 </form>
                                             </td>
                                         </tr>
@@ -172,7 +172,7 @@ include('../middleware/adminmiddleware.php');
                     </div>
                     <!-- Add Design Button -->
                     <div class="mt-3">
-                        <a href="design.php" class="btn btn-success">Add Design</a>
+                        <a href="add_invoice.php" class="btn btn-success">Add Invoice</a>
                     </div>
                 </div>
             </div>

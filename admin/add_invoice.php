@@ -8,11 +8,11 @@ include('../middleware/adminmiddleware.php');
         text-align: center;
         font-size: 34px;
         font-family: 'Times New Roman', sans-serif;
-        color: #193441; /* Use fourth-color */
+        color: #193441; 
         margin-top: 20px;
         text-decoration: underline;
         font-weight: bold;
-        background-color: #d1dbbd; /* Use first-color for background */
+        background-color: #d1dbbd;
         padding: 10px; /* Add some padding */
         border-radius: 5px; /* Add some border radius */
     }
@@ -87,22 +87,22 @@ include('../middleware/adminmiddleware.php');
         <div class="col-md-12">
             <div class="card second-color">
                 <div class="card-header first-color">
-                    <h4 class="custom-heading">Add Drawing</h4>
+                    <h4 class="custom-heading">Add Invoice</h4>
                 </div>
                 <div class="card-body third-color">
-                    <form action="code.php" method="POST">
+                    <form action="code_invoice.php" method="POST">
                         <div class="col-md-12">
                             <div class="row mb-3">
-                                <label for="drawing_number" class="form-label">Drawing No.</label>
-                                <input type="text" name="drawing_number" id="drawing_number" placeholder="Enter Drawing No." class="form-control">
+                                <label for="invoice_number" class="form-label">Invoice No.</label>
+                                <input type="text" name="invoice_number" id="invoice_number" placeholder="Enter Invoice No." class="form-control">
                             </div>
                             <div class="row mb-3">
-                                <label for="drawing_title" class="form-label">Drawing Title</label>
-                                <input type="text" name="drawing_title" id="drawing_title" placeholder="Enter Drawing Title" class="form-control">
+                                <label for="invoice_date" class="form-label">Invoice Date</label>
+                                <input type="date" name="invoice_date" id="invoice_title" placeholder="Enter Invoice Date" class="form-control">
                             </div>
                             <div class="row mb-3">
-                                <label for="category" class="form-label">Category</label>
-                                <input type="text" name="category" id="category" placeholder="Enter Category" class="form-control">
+                                <label for="invoice_name" class="form-label">Invoice Title</label>
+                                <input type="text" name="invoice_name" id="invoice_name" placeholder="Enter Invoice Title" class="form-control">
                             </div>
                             <div class="row mb-3">
                                 <label for="status" class="form-label">Status</label>
@@ -113,7 +113,7 @@ include('../middleware/adminmiddleware.php');
                                 </select>
                             </div>
                             <div class="col-md-12">
-                                <button type="submit" class="btn btn-primary mt-4 w-100" name="add_drawing_btn">Save</button>
+                                <button type="submit" class="btn btn-primary mt-4 w-100" name="add_invoice_btn">Save</button>
                             </div>
                         </div>
                     </form>

@@ -87,29 +87,29 @@ include('../middleware/adminmiddleware.php');
             <?php
             if (isset($_GET['id'])) {
                 $id = $_GET['id'];
-                $design = getByID("design", $id);
+                $design = getByID("invoice", $id);
 
-                if (mysqli_num_rows($design) > 0) {
-                    $data = mysqli_fetch_array($design);
+                if (mysqli_num_rows($invoice) > 0) {
+                    $data = mysqli_fetch_array($invoice);
                     ?>
                     <div class="card second-color">
                         <div class="card-header first-color">
-                            <h4 class="custom-heading">Edit Drawing</h4>
+                            <h4 class="custom-heading">Edit Invoice</h4>
                         </div>
                         <div class="card-body third-color">
-                            <form action="code.php" method="POST">
-                                <input type="hidden" name="design_id" value="<?= $data['id'] ?>">
+                            <form action="code_invoice.php" method="POST">
+                                <input type="hidden" name="invoice_id" value="<?= $data['id'] ?>">
                                 <div class="row mb-3">
-                                    <label for="drawing_number" class="form-label">Drawing No.</label>
-                                    <input type="text" name="drawing_number" value="<?= $data['drawing_number'] ?>" placeholder="Enter Drawing No." class="form-control">
+                                    <label for="invoice_number" class="form-label">Invoice No.</label>
+                                    <input type="text" name="invoice_number" value="<?= $data['invoice_number'] ?>" placeholder="Enter Invoice No." class="form-control">
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="drawing_title" class="form-label">Drawing Title</label>
-                                    <input type="text" name="drawing_title" value="<?= $data['drawing_title'] ?>" placeholder="Enter Drawing Title" class="form-control">
+                                    <label for="invoice_date" class="form-label">Invoice Date</label>
+                                    <input type="date" name="invoice_date" value="<?= $data['invoice_date'] ?>" placeholder="Enter Invoice Date" class="form-control">
                                 </div>
                                 <div class="row mb-3">
-                                    <label for="category" class="form-label">Category</label>
-                                    <input type="text" name="category" value="<?= $data['category'] ?>" placeholder="Enter Category" class="form-control">
+                                    <label for="invoice_name" class="form-label">Invoice Title</label>
+                                    <input type="text" name="invoice_name" value="<?= $data['invoice_name'] ?>" placeholder="Enter Invoice Title" class="form-control">
                                 </div>
                                 <div class="row mb-3">
                                     <label for="status" class="form-label">Status</label>
@@ -120,7 +120,7 @@ include('../middleware/adminmiddleware.php');
                                     </select>
                                 </div>
                                 <div class="col-md-12">
-                                    <button type="submit" class="btn btn-primary mt-4 w-100" name="update_drawing_btn">Update</button>
+                                    <button type="submit" class="btn btn-primary mt-4 w-100" name="update_invoice_btn">Update</button>
                                 </div>
                             </form>
                         </div>

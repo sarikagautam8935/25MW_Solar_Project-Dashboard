@@ -38,7 +38,6 @@ $total_count_supply = $row_supply['total_count_supply'];
 
 // Calculate the percentage of approved entries
 $delivered_percentage = ($total_count_supply > 0) ? ($delivered_count / $total_count_supply) * 100 : 0;
-
 ?>
 
 <style>
@@ -83,6 +82,13 @@ $delivered_percentage = ($total_count_supply > 0) ? ($delivered_count / $total_c
 
     .header-container .logo-container {
         margin: 0 20px; 
+    }
+
+    .card-container {
+        display: flex;
+        gap: 10px; /* Space between cards */
+        overflow-x: auto; /* Allow horizontal scrolling if cards overflow */
+        padding: 10px;
     }
 
     .logo-container img {
@@ -154,6 +160,19 @@ $delivered_percentage = ($total_count_supply > 0) ? ($delivered_count / $total_c
         color: #193441;
         margin-top: 10px;
     }
+
+    .countdown-container {
+        text-align: right;
+        margin-right: 20px;
+    }
+
+    /* Style for countdown timer */
+    #countdown-timer {
+        font-size: 30px; /* Increase the font size */
+        color: red; /* Set text color to black */
+        font-family: 'Times New Roman', serif; /* Set font family to Times New Roman */
+        font-weight: bold; /* Set font weight to bold */
+    }
 </style>
 
 <div class="container content">
@@ -168,8 +187,16 @@ $delivered_percentage = ($total_count_supply > 0) ? ($delivered_count / $total_c
                     <img src="assets/image/LOGO2.png" alt="Logo 2">
                 </div>
             </div>
+            <!-- New row for the countdown timer -->
             <div class="row">
-                <div class="col-lg-4 col-sm-4 mb-3">
+                <div class="col-md-12">
+                    <div class="countdown-container">
+                        <span id="countdown-timer"></span>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="card-container">
                     <div class="card">
                         <div class="card-header card-header-custom blue-card-header">
                             <h6>Contractual Start Date</h6>
@@ -178,8 +205,6 @@ $delivered_percentage = ($total_count_supply > 0) ? ($delivered_count / $total_c
                             <p>01-Sep-2020</p>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-sm-4 mb-3">
                     <div class="card">
                         <div class="card-header card-header-custom blue-card-header">
                             <h6>Contractual End Date</h6>
@@ -188,14 +213,28 @@ $delivered_percentage = ($total_count_supply > 0) ? ($delivered_count / $total_c
                             <p>31-Aug-2024</p>
                         </div>
                     </div>
-                </div>
-                <div class="col-lg-4 col-sm-4 mb-3">
                     <div class="card">
                         <div class="card-header card-header-custom blue-card-header">
                             <h6>Best Effort Completion</h6>
                         </div>
                         <div class="card-body date-card">
                             <p>31-Dec-2024</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header card-header-custom blue-card-header">
+                            <h6>Physical Completion</h6>
+                        </div>
+                        <div class="card-body date-card">
+                            <p>31-Aug-2024</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header card-header-custom blue-card-header">
+                            <h6>Financial Completion</h6>
+                        </div>
+                        <div class="card-body date-card">
+                            <p>31-Aug-2024</p>
                         </div>
                     </div>
                 </div>
@@ -253,7 +292,7 @@ $delivered_percentage = ($total_count_supply > 0) ? ($delivered_count / $total_c
                     <div class="card">
                         <div class="card-header card-header-custom blue-card-header">
                             <i class="material-icons icon">receipt</i>
-                            <h6>Invoices</h6>
+                            <h6>Invoice</h6>
                         </div>
                         <div class="card-body">
                             <div class="chart-container">
@@ -273,6 +312,27 @@ $delivered_percentage = ($total_count_supply > 0) ? ($delivered_count / $total_c
 <?php include('includes/footer.php'); ?>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <script>
+
+function updateCountdown() {
+        var countdownDate = new Date("Aug 31, 2024 00:00:00").getTime();
+        var now = new Date().getTime();
+        var timeleft = countdownDate - now;
+
+        var days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
+
+        document.getElementById("countdown-timer").innerHTML = days + "d " + hours + "h " + minutes + "m " + seconds + "s ";
+
+        if (timeleft < 0) {
+            clearInterval(x);
+            document.getElementById("countdown-timer").innerHTML = "EXPIRED";
+        }
+    }
+
+    var x = setInterval(updateCountdown, 1000); 
+    
     document.addEventListener('DOMContentLoaded', function() {
         var designCtx = document.getElementById('designPieChart').getContext('2d');
         var designPieChart = new Chart(designCtx, {
@@ -339,6 +399,35 @@ $delivered_percentage = ($total_count_supply > 0) ? ($delivered_count / $total_c
                 labels: ['Completed', 'Others'],
                 datasets: [{
                     data: [<?= $completed_percentage; ?>, <?= 100 - $completed_percentage; ?>],
+                    backgroundColor: ['#193441', '#91aa9d'],
+                    hoverBackgroundColor: ['#193441', '#91aa9d']
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(tooltipItem) {
+                                return tooltipItem.label + ': ' + tooltipItem.raw.toFixed(2) + '%';
+                            }
+                        }
+                    }
+                }
+            }
+        });
+
+        var designCtx = document.getElementById('invoicePieChart').getContext('2d');
+        var invoicePieChart = new Chart(designCtx, {
+            type: 'pie',
+            data: {
+                labels: ['Approved', 'Others'],
+                datasets: [{
+                    data: [<?= $approved_percentage; ?>, <?= 100 - $approved_percentage; ?>],
                     backgroundColor: ['#193441', '#91aa9d'],
                     hoverBackgroundColor: ['#193441', '#91aa9d']
                 }]

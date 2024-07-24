@@ -11,96 +11,96 @@ function reconnect_db($con) {
     }
 }
 
-function handle_add_drawing($con) {
+function handle_add_invoice($con) {
     reconnect_db($con);
 
     // Retrieve and escape POST variables
-    $drawing_number = mysqli_real_escape_string($con, $_POST['drawing_number']);
-    $drawing_title = mysqli_real_escape_string($con, $_POST['drawing_title']);
-    $category = mysqli_real_escape_string($con, $_POST['category']);
+    $invoice_number = mysqli_real_escape_string($con, $_POST['invoice_number']);
+    $invoice_date = mysqli_real_escape_string($con, $_POST['invoice_date']);
+    $invoice_name = mysqli_real_escape_string($con, $_POST['invoice_name']);
     $status = mysqli_real_escape_string($con, $_POST['status']);
 
     // Prepare and execute the insert statement
-    $stmt = mysqli_prepare($con, "INSERT INTO design (drawing_number, drawing_title, category, status) VALUES (?, ?, ?, ?)");
-    mysqli_stmt_bind_param($stmt, "ssss", $drawing_number, $drawing_title, $category, $status);
+    $stmt = mysqli_prepare($con, "INSERT INTO invoice (invoice_number, invoice_date, invoice_name, status) VALUES (?, ?, ?, ?)");
+    mysqli_stmt_bind_param($stmt, "ssss", $invoice_number, $invoice_date, $invoice_name, $status);
     $result = mysqli_stmt_execute($stmt);
 
     // Check the result and redirect accordingly
     if ($result) {
-        redirect("design_display.php", "Drawing Added Successfully");
+        redirect("invoice.php", "Invoice Added Successfully");
     } else {
-        redirect("design.php", "Something went wrong: " . mysqli_error($con));
+        redirect("add_invoice.php", "Something went wrong: " . mysqli_error($con));
     }
 
     mysqli_stmt_close($stmt);
 }
 
-function handle_update_drawing($con) {
+function handle_update_invoice($con) {
     reconnect_db($con);
 
     // Retrieve and escape POST variables
-    $design_id = mysqli_real_escape_string($con, $_POST['design_id']);
-    $drawing_number = mysqli_real_escape_string($con, $_POST['drawing_number']);
-    $drawing_title = mysqli_real_escape_string($con, $_POST['drawing_title']);
-    $category = mysqli_real_escape_string($con, $_POST['category']);
+    $invoice_id = mysqli_real_escape_string($con, $_POST['invoice_id']);
+    $invoice_number = mysqli_real_escape_string($con, $_POST['invoice_number']);
+    $invoice_date = mysqli_real_escape_string($con, $_POST['invoice_date']);
+    $invoice_name = mysqli_real_escape_string($con, $_POST['invoice_name']);
     $status = mysqli_real_escape_string($con, $_POST['status']);
 
     // Prepare and execute the update statement
-    $stmt = mysqli_prepare($con, "UPDATE design SET drawing_number = ?, drawing_title = ?, category = ?, status = ? WHERE id = ?");
+    $stmt = mysqli_prepare($con, "UPDATE invoice SET invoice_number = ?, invoice_date = ?, invoice_name = ?, status = ? WHERE id = ?");
     if ($stmt) {
-        mysqli_stmt_bind_param($stmt, "ssssi", $drawing_number, $drawing_title, $category, $status, $design_id);
+        mysqli_stmt_bind_param($stmt, "ssssi", $invoice_number, $invoice_date, $invoice_name, $status, $invoice_id);
         $result = mysqli_stmt_execute($stmt);
 
         // Check the result and redirect accordingly
         if ($result) {
-            redirect("design_display.php", "Drawing Updated Successfully");
+            redirect("invoice.php", "Drawing Updated Successfully");
         } else {
-            redirect("design.php", "Something went wrong: " . mysqli_stmt_error($stmt));
+            redirect("add_invoice.php", "Something went wrong: " . mysqli_stmt_error($stmt));
         }
 
         mysqli_stmt_close($stmt);
     } else {
-        redirect("design.php", "Database error: " . mysqli_error($con));
+        redirect("add_invoice.php", "Database error: " . mysqli_error($con));
     }
 }
 
-function handle_delete_drawing($con) {
+function handle_delete_invoice($con) {
     reconnect_db($con);
 
     // Retrieve and escape POST variables
-    $design_id = mysqli_real_escape_string($con, $_POST['design_id']);
+    $invoice_id = mysqli_real_escape_string($con, $_POST['invoice_id']);
 
     // Start transaction
     mysqli_begin_transaction($con);
 
     try {
-        $delete_query = "DELETE FROM design WHERE id = '$design_id'";
-        $delete_query_run = mysqli_query($con, $delete_query);
+        $invoice_query = "DELETE FROM invoice WHERE id = '$invoice_id'";
+        $invoice_query_run = mysqli_query($con, $invoice_query);
 
         // Commit or rollback transaction based on the result
-        if ($delete_query_run) {
+        if ($invoice_query_run) {
             mysqli_commit($con);
-            redirect("design_display.php", "Design deleted successfully");
+            redirect("invoice.php", "Invoice deleted successfully");
         } else {
             mysqli_rollback($con);
-            redirect("design_display.php", "Something went wrong: " . mysqli_error($con));
+            redirect("invoice.php", "Something went wrong: " . mysqli_error($con));
         }
     } catch (mysqli_sql_exception $exception) {
         mysqli_rollback($con);
-        redirect("design_display.php", "Something went wrong: " . $exception->getMessage());
+        redirect("invoice.php", "Something went wrong: " . $exception->getMessage());
     }
 }
 
 // Handle different POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['add_drawing_btn']) && isset($_POST['drawing_number']) && isset($_POST['drawing_title'])) {
-        handle_add_drawing($con);
-    } else if (isset($_POST['update_drawing_btn'])) {
-        handle_update_drawing($con);
-    } else if (isset($_POST['delete_drawing_btn'])) {
-        handle_delete_drawing($con);
+    if (isset($_POST['add_invoice_btn']) && isset($_POST['invoice_number']) && isset($_POST['invoice_date'])) {
+        handle_add_invoice($con);
+    } else if (isset($_POST['update_invoice_btn'])) {
+        handle_update_invoice($con);
+    } else if (isset($_POST['delete_invoice_btn'])) {
+        handle_delete_invoice($con);
     } else {
-        redirect("design.php", "Invalid Access");
+        redirect("add_invoice.php", "Invalid Access");
     }
 }
 
